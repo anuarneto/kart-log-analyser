@@ -1,0 +1,21 @@
+# Gradle
+build/
+.gradle/
+gradle/
+gradlew
+gradlew.bat
+
+# Eclipse
+bin/
+.settings/
+.project
+.classpath
+
+# IDEA
+.idea/
+out/
+*.iml
+*.ipr
+*.iws
+
+logs/

@@ -1,0 +1,8 @@
+
+Aplicação Spring Boot e kotlin com swagger.
+
+Após executar a aplicação acesse http://localhost:8080/swagger-ui.html para testar via browser.
+
+Ao longo da semana colocarei a geração de imagem docker
+
+O ponto de entrada "/analyse/details" contêm mais informações (bonus)

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true" scan="true" scanPeriod="30 minutes" >
+
+    <property name="appName" value="kart-log-analyser" />
+    <property name="LOG_PATH" value="./logs" />
+    <property name="LOG_FILE_BASE" value="${LOG_PATH}/${appName}" />
+    <property name="LOG_FILE" value="${LOG_FILE_BASE}.log" />
+    <property name="LOG_FILE_APP" value="${LOG_FILE_BASE}_app.log" />
+    <property name="LOG_FILE_DB" value="${LOG_FILE_BASE}_db.log" />
+
+    <!-- Para alterar o padrão dos logs gerados basta alterar estas propriedades e descomentá-las
+        <property name="pattern" value="[%d{dd/MM/yyyy HH:mm:ss}] %clr(${LOG_LEVEL_PATTERN:-%5p}) %msg%n" />
+        <property name="CONSOLE_LOG_PATTERN" value="${pattern}"/>
+        <property name="FILE_LOG_PATTERN" value="${pattern}"/>
+    -->
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+	<appender name="main" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${LOG_FILE_APP}</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${LOG_FILE_APP}-%d{yyyyMMdd}.%i.zip</FileNamePattern>
+			<maxHistory>3</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${FILE_LOG_PATTERN}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="database" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${LOG_FILE_DB}</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${LOG_FILE_DB}-%d{yyyyMMdd}.%i.zip</FileNamePattern>
+			<maxHistory>3</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${FILE_LOG_PATTERN}</pattern>
+		</encoder>
+	</appender>	
+	
+    <logger name="guru.springframework.controllers" level="WARN" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <logger name="guru.springframework.helpers" level="WARN" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <logger name="org.hibernate" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="database"/>
+    </logger>
+	
+    <logger name="com.adaptti" level="ALL" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="main"/>
+    </logger>
+</configuration>

@@ -1,0 +1,74 @@
+spring:
+  application:
+    name: Kart Log Analyser
+
+## MULTIPART (MultipartProperties)
+  servlet.multipart:
+    # Enable multipart uploads
+    enabled: true
+    # Threshold after which files are written to disk.
+    file-size-threshold: 2KB
+    # Max file size.
+    max-file-size: 200MB
+    # Max Request Size
+    max-request-size: 215MB
+
+server:
+  port: 8080
+
+logging:
+  config: classpath:logback.xml
+
+management:
+  port: 8081
+  address: 0.0.0.0
+  security:
+    enabled: false
+    role: SUPERUSER
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+security:
+  user:
+    name: admin
+    password: secret
+
+info.app:
+  name: ${spring.application.name}
+  description: Serviço para analisar logs de corrida de Kart
+
+# configurações de clientes de administração e distribuição para monitoramento
+#spring.boot.admin.url: http://<ip servidor spring boot admin>:<porta>
+#spring.boot.admin.url: http://localhost:9090
+
+# configurações de clientes do eureka, ainda sem dependências necessárias
+#eureka:
+#  instance:
+#    leaseRenewalIntervalInSeconds: 10
+#    preferIpAddress: true
+#  client:
+#    registryFetchIntervalSeconds: 5
+#    serviceUrl:
+#      defaultZone: http://<ip servidor eureka>:<porta>/eureka/
+
+#---
+#spring:
+#  profiles: secure
+#  security:
+#    user:
+#      name: "user"
+#      password: "password"
+#  boot:
+#    admin:
+#      client:
+#        username: "user"       #These two are needed so that the client
+#        password: "password"   #can register at the protected server api
+#        instance:
+#          metadata:
+#            user.name: "user"         #These two are needed so that the server
+#            user.password: "password" #can access the protected client endpoints
