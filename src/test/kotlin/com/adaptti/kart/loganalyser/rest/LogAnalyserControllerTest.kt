@@ -73,21 +73,6 @@ class LogAnalyserControllerTest {
 
     @Test
     @Throws(Exception::class)
-    fun testAnalyseHtml() {
-
-        val mockMultipartFile = MockMultipartFile("file", javaClass.classLoader.getResourceAsStream("kart.log"))
-
-        val builder = MockMvcRequestBuilders.multipart("/kart/log/analyse/html")
-                .file(mockMultipartFile)
-
-        mockMvc.perform(builder)
-                .andExpect(status().isOk)
-                .andExpect(content().contentType(MediaType.TEXT_HTML))
-                .andDo(MockMvcResultHandlers.print())
-    }
-
-    @Test
-    @Throws(Exception::class)
     fun testAnalysePlain() {
 
         val mockMultipartFile = MockMultipartFile("file", javaClass.classLoader.getResourceAsStream("kart.log"))
@@ -97,7 +82,7 @@ class LogAnalyserControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk)
-                .andExpect(content().contentType(MediaType.TEXT_PLAIN))
+                .andExpect(content().contentType("${MediaType.TEXT_PLAIN_VALUE};charset=UTF-8"))
                 .andDo(MockMvcResultHandlers.print())
     }
 
@@ -112,7 +97,7 @@ class LogAnalyserControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk)
-                .andExpect(content().contentType(MediaType.TEXT_PLAIN))
+                .andExpect(content().contentType("${MediaType.TEXT_PLAIN_VALUE};charset=UTF-8"))
                 .andDo(MockMvcResultHandlers.print())
     }
 }
