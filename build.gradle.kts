@@ -69,5 +69,3 @@ docker {
         tag = "$group/${project.name}:$version"
     }
 }
-// test docker generated image executing:
-// docker run -p 8080:8080 -d "$group/${project.name}:$version"
