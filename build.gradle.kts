@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     val kotlinVersion = "1.2.70"
-    val gradleDockerPluginVersion = "3.5.0"
+    val gradleDockerPluginVersion = "3.6.1"
     val springBootVersion = "2.0.5.RELEASE"
     val dependencyManagementVersion = "1.0.6.RELEASE"
     val uptodatePluginVersion = "1.6.3"
@@ -13,9 +13,9 @@ plugins {
     kotlin("plugin.jpa") version kotlinVersion
     kotlin("plugin.allopen") version kotlinVersion
     id("org.springframework.boot") version springBootVersion
-    id("com.bmuschko.docker-remote-api") version gradleDockerPluginVersion
     id("io.spring.dependency-management") version dependencyManagementVersion
     id("com.ofg.uptodate") version uptodatePluginVersion
+    id("com.bmuschko.docker-spring-boot-application") version gradleDockerPluginVersion
 }
 
 springBoot {
@@ -24,6 +24,7 @@ springBoot {
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 configurations.compile.exclude(group = "org.springframework.boot", module = "spring-boot-starter-tomcat")
@@ -50,3 +51,23 @@ configure<JavaPluginConvention> {
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
+
+docker {
+//    registry configurations
+//    url = "unix:///var/run/docker.sock"
+//    url = "${private-registry-url}:${private-registry-port}"
+//
+//    registryCredentials {
+//        url = 'https://index.docker.io/v1/'
+//        username = 'user'
+//        password = 'pass'
+//        email = 'anuarneto@adaptti.com'
+//    }
+    springBootApplication {
+        baseImage = "openjdk:8-alpine"
+        ports.plus(arrayOf(8080))
+        tag = "$group/${project.name}:$version"
+    }
+}
+// test docker generated image executing:
+// docker run -p 8080:8080 -d "$group/${project.name}:$version"
